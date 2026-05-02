@@ -128,7 +128,6 @@ def history():
             "date": r[5]
         } for r in rows
     ])
-
 import os
 
 if __name__ == "__main__":
