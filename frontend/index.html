@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Resume Skill Gap Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="logo">AI Resume Skill Gap Analyzer</div>
+    <div class="nav-actions">
+        <span id="welcome"></span>
+        <button onclick="toggleTheme()">🌙</button>
+        <button onclick="window.location.href='history.html'">History</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+    <h2>Resume Skill Gap Analysis</h2>
+
+    <!-- Resume Upload -->
+    <label>Upload Resume (PDF / DOCX)</label>
+    <input type="file" id="resume" accept=".pdf,.docx">
+
+    <!-- Job Role Selection -->
+    <label>Select Job Role</label>
+<select id="jobRole" onchange="applyJobRoleSkills()">
+    <option value="">-- Select Job Role --</option>
+
+    <!-- Development Roles -->
+    <option value="web">Web Developer</option>
+    <option value="frontend">Frontend Developer</option>
+    <option value="backend">Backend Developer</option>
+    <option value="fullstack">Full Stack Developer</option>
+
+    <!-- Data & AI Roles -->
+    <option value="data">Data Scientist</option>
+    <option value="ml">Machine Learning Engineer</option>
+    <option value="ai">AI Engineer</option>
+    <option value="analyst">Data Analyst</option>
+
+    <!-- Software & Cloud -->
+    <option value="software">Software Engineer</option>
+    <option value="cloud">Cloud Engineer</option>
+    <option value="devops">DevOps Engineer</option>
+
+    <!-- Security -->
+    <option value="cyber">Cyber Security Analyst</option>
+</select>
+
+
+    <!-- Skills -->
+    <h4>Required Skills</h4>
+<div class="skills">
+
+    <!-- Programming -->
+    <label><input type="checkbox" value="python"> Python</label>
+    <label><input type="checkbox" value="java"> Java</label>
+    <label><input type="checkbox" value="c++"> C++</label>
+    <label><input type="checkbox" value="c"> C</label>
+    <label><input type="checkbox" value="javascript"> JavaScript</label>
+
+    <!-- Web -->
+    <label><input type="checkbox" value="html"> HTML</label>
+    <label><input type="checkbox" value="css"> CSS</label>
+    <label><input type="checkbox" value="react"> React</label>
+    <label><input type="checkbox" value="nodejs"> Node.js</label>
+
+    <!-- Backend -->
+    <label><input type="checkbox" value="flask"> Flask</label>
+    <label><input type="checkbox" value="django"> Django</label>
+    <label><input type="checkbox" value="spring boot"> Spring Boot</label>
+
+    <!-- Database -->
+    <label><input type="checkbox" value="sql"> SQL</label>
+    <label><input type="checkbox" value="mysql"> MySQL</label>
+    <label><input type="checkbox" value="mongodb"> MongoDB</label>
+
+    <!-- Data / AI -->
+    <label><input type="checkbox" value="machine learning"> Machine Learning</label>
+    <label><input type="checkbox" value="deep learning"> Deep Learning</label>
+    <label><input type="checkbox" value="data analysis"> Data Analysis</label>
+    <label><input type="checkbox" value="nlp"> NLP</label>
+
+    <!-- Cloud & DevOps -->
+    <label><input type="checkbox" value="aws"> AWS</label>
+    <label><input type="checkbox" value="docker"> Docker</label>
+    <label><input type="checkbox" value="kubernetes"> Kubernetes</label>
+
+    <!-- Security -->
+    <label><input type="checkbox" value="cyber security"> Cyber Security</label>
+
+</div>
+
+
+    <!-- Analyze Button -->
+    <button class="primary-btn" onclick="analyzeResume()">Analyze Resume</button>
+
+</main>
+
+<script src="script.js"></script>
+<script src="theme.js"></script>
+</body>
+</html>

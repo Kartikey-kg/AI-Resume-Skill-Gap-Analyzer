@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">AI Resume Skill Gap Analyzer</div>
+    <div class="nav-actions">
+        <button onclick="toggleTheme()">🌙</button>
+        <a href="login.html">Login</a>
+    </div>
+</header>
+
+<main class="auth-wrapper">
+    <div class="auth-box">
+        <h2>Create Account</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button class="primary-btn" onclick="signup()">Signup</button>
+        <p id="msg"></p>
+    </div>
+</main>
+
+<script>
+function signup() {
+    fetch("http://127.0.0.1:5000/signup", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            username: username.value,
+            email: email.value,
+            password: password.value
+        })
+    })
+    .then(res => res.json())
+    .then(data => msg.innerText = data.message || data.error);
+}
+</script>
+
+<script src="theme.js"></script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analysis Result</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">AI Resume Skill Gap Analyzer</div>
+    <div class="nav-actions">
+        <button onclick="toggleTheme()">🌙</button>
+        <button onclick="location.href='index.html'">Dashboard</button>
+    </div>
+</header>
+
+<main class="main-content">
+
+    <h2>Resume Analysis Result</h2>
+
+    <!-- DOWNLOAD PDF -->
+    <button class="primary-btn" onclick="downloadPDF()">📄 Download Report</button>
+
+    <!-- SCORE BAR -->
+    <div class="score-card">
+        <div class="score-text">
+            Skill Match Score: <b><span id="scoreValue"></span>%</b>
+        </div>
+        <div class="score-bar">
+            <div class="score-fill" id="scoreFill"></div>
+        </div>
+    </div>
+
+    <!-- SKILL GAP CHART -->
+    <h4>Skill Gap Visualization</h4>
+
+<!-- Chart container to control size -->
+<div class="chart-container">
+    <canvas id="skillChart"></canvas>
+</div>
+
+
+    <!-- MATCHED SKILLS -->
+    <h4>Matched Skills</h4>
+    <div id="matchedSkills" class="skill-tags"></div>
+
+    <!-- MISSING SKILLS -->
+    <h4>Missing Skills</h4>
+    <div id="missingSkills" class="skill-tags"></div>
+
+    <!-- RECOMMENDATIONS -->
+    <h4>Recommended Skills to Learn</h4>
+    <ul id="recommendations"></ul>
+
+</main>
+
+<!-- THEME -->
+<script src="theme.js"></script>
+
+<!-- CHART.JS (MUST COME BEFORE CHART CODE) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+/* =====================
+   READ ANALYSIS DATA
+   ===================== */
+const data = JSON.parse(localStorage.getItem("analysisResult"));
+
+if (!data) {
+    document.querySelector(".main-content").innerHTML =
+        "<p>No analysis data found.</p>";
+} else {
+
+    /* =====================
+       SCORE BAR ANIMATION
+       ===================== */
+    const score = data.score;
+    document.getElementById("scoreValue").innerText = score;
+
+    setTimeout(() => {
+        document.getElementById("scoreFill").style.width = score + "%";
+    }, 300);
+
+    /* =====================
+       SKILL HIGHLIGHTING
+       ===================== */
+    const matchedDiv = document.getElementById("matchedSkills");
+    const missingDiv = document.getElementById("missingSkills");
+
+    data.matched_skills.forEach(skill => {
+        matchedDiv.innerHTML += `<span class="tag green">${skill}</span>`;
+    });
+
+    data.missing_skills.forEach(skill => {
+        missingDiv.innerHTML += `<span class="tag red">${skill}</span>`;
+    });
+
+    /* =====================
+   RECOMMENDED SKILLS TO LEARN
+   ===================== */
+
+/* Role → important skills map */
+const roleCoreSkills = {
+    web: ["html", "css", "javascript", "react", "responsive design"],
+    frontend: ["html", "css", "javascript", "react"],
+    backend: ["python", "java", "sql", "flask", "django"],
+    fullstack: ["html", "css", "javascript", "react", "python", "sql"],
+
+    data: ["python", "sql", "data analysis", "machine learning"],
+    analyst: ["sql", "data analysis", "python"],
+    ml: ["python", "machine learning", "deep learning"],
+    ai: ["python", "machine learning", "deep learning", "nlp"],
+
+    software: ["java", "python", "c++", "data structures"],
+    cloud: ["aws", "docker", "kubernetes"],
+    devops: ["aws", "docker", "kubernetes", "ci/cd"],
+
+    cyber: ["cyber security", "networking", "linux"]
+};
+
+const selectedRole = localStorage.getItem("selectedRole");
+const recList = document.getElementById("recommendations");
+
+/* Clear previous list */
+recList.innerHTML = "";
+
+/* Suggest skills missing for selected role */
+if (roleCoreSkills[selectedRole]) {
+    const missingSkills = data.missing_skills.map(s => s.toLowerCase());
+
+    roleCoreSkills[selectedRole].forEach(skill => {
+        if (missingSkills.includes(skill)) {
+            recList.innerHTML += `<li>📘 Learn <b>${skill}</b></li>`;
+        }
+    });
+
+    if (recList.innerHTML === "") {
+        recList.innerHTML = "<li>✅ You already meet most role requirements</li>";
+    }
+} else {
+    recList.innerHTML = "<li>No recommendations available</li>";
+}
+
+
+    /* =====================
+       SKILL GAP CHART
+       ===================== */
+    const ctx = document.getElementById("skillChart").getContext("2d");
+
+    new Chart(ctx, {
+        type: "doughnut",
+        data: {
+            labels: ["Matched Skills", "Missing Skills"],
+            datasets: [{
+                data: [
+                    data.matched_skills.length,
+                    data.missing_skills.length
+                ],
+                backgroundColor: ["#22c55e", "#ef4444"]
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: "bottom"
+                }
+            }
+        }
+    });
+}
+
+/* =====================
+   DOWNLOAD PDF
+   ===================== */
+function downloadPDF() {
+    window.print();
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>History</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">AI Resume Skill Gap Analyzer</div>
+    <div class="nav-actions">
+        <button onclick="toggleTheme()">🌙</button>
+        <button onclick="location.href='index.html'">Dashboard</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+</header>
+
+<main class="main-content">
+    <h2>Analysis History</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Resume</th>
+                <th>Matched</th>
+                <th>Missing</th>
+                <th>Score</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody id="historyTable"></tbody>
+    </table>
+</main>
+
+<script>
+if (!localStorage.getItem("username")) location.href = "login.html";
+
+fetch("http://127.0.0.1:5000/history")
+.then(res => res.json())
+.then(data => {
+    historyTable.innerHTML = data.map(r => `
+        <tr>
+            <td>${r.resume}</td>
+            <td>${r.matched}</td>
+            <td>${r.missing}</td>
+            <td>${r.score}%</td>
+            <td>${r.date}</td>
+        </tr>`).join("");
+});
+
+function logout() {
+    localStorage.clear();
+    location.href = "login.html";
+}
+</script>
+
+<script src="theme.js"></script>
+</body>
+</html>

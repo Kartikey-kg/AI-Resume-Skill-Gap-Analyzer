@@ -1,0 +1,9 @@
+flask
+flask-cors
+spacy
+nltk
+scikit-learn
+pandas
+PyPDF2
+docx2txt
+werkzeug
